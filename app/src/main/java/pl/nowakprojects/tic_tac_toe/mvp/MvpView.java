@@ -5,4 +5,6 @@ package pl.nowakprojects.tic_tac_toe.mvp;
  */
 
 public interface MvpView {
+    void initPresenter();
+    void initUserInterface();
 }

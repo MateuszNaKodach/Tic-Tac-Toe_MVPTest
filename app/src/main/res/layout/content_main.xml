@@ -13,17 +13,6 @@
     tools:context="pl.nowakprojects.tic_tac_toe.ui.game.GameBoardActivity"
     tools:showIn="@layout/activity_main">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView" />
-    </LinearLayout>
 
     <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
@@ -32,7 +21,8 @@
         android:layout_centerHorizontal="true"
         app:columnCount="3"
         app:rowCount="3"
-        android:background="@drawable/board">
+        android:background="@drawable/board"
+        android:id="@+id/game_board_layout">
 
 
         <ImageView
@@ -41,7 +31,7 @@
             app:layout_column="0"
             app:layout_row="0"
             android:layout_margin="10dp"
-            android:onClick="dropIn"
+            android:onClick="placeActiveMarkOnFieldView"
             android:tag="0"/>
 
         <ImageView
@@ -51,7 +41,8 @@
             app:layout_row="0"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="35dp"
-            android:onClick="dropIn"
+            android:layout_marginStart="35dp"
+            android:onClick="placeActiveMarkOnFieldView"
             android:tag="1"/>
 
         <ImageView
@@ -61,7 +52,8 @@
             app:layout_row="0"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="35dp"
-            android:onClick="dropIn"
+            android:layout_marginStart="35dp"
+            android:onClick="placeActiveMarkOnFieldView"
             android:tag="2"/>
 
         <ImageView
@@ -70,8 +62,9 @@
             app:layout_column="0"
             app:layout_row="1"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="25dp"
-            android:onClick="dropIn"
+            android:onClick="placeActiveMarkOnFieldView"
             android:tag="3"/>
 
         <ImageView
@@ -80,8 +73,9 @@
             app:layout_column="0"
             app:layout_row="2"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="30dp"
-            android:onClick="dropIn"
+            android:onClick="placeActiveMarkOnFieldView"
             android:tag="6"/>
 
         <ImageView
@@ -90,8 +84,9 @@
             app:layout_column="1"
             app:layout_row="1"
             android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="25dp"
-            android:onClick="dropIn"
+            android:onClick="placeActiveMarkOnFieldView"
             android:tag="4"/>
 
         <ImageView
@@ -100,8 +95,9 @@
             app:layout_column="1"
             app:layout_row="2"
             android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="30dp"
-            android:onClick="dropIn"
+            android:onClick="placeActiveMarkOnFieldView"
             android:tag="7"/>
 
         <ImageView
@@ -110,8 +106,9 @@
             app:layout_column="2"
             app:layout_row="1"
             android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="25dp"
-            android:onClick="dropIn"
+            android:onClick="placeActiveMarkOnFieldView"
             android:tag="5"/>
 
 
@@ -121,10 +118,36 @@
             app:layout_column="2"
             app:layout_row="2"
             android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="30dp"
-            android:onClick="dropIn"
+            android:onClick="placeActiveMarkOnFieldView"
             android:tag="8"/>
 
 
     </android.support.v7.widget.GridLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="30dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorAccent"
+        android:id="@+id/play_again_layout"
+        android:visibility="invisible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/winner_message_textView"
+            android:textSize="24sp" />
+
+        <Button
+            android:text="@string/play_again"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/play_again_button"
+            android:onClick="playAgain" />
+    </LinearLayout>
 </RelativeLayout>

@@ -12,9 +12,20 @@ import pl.nowakprojects.tic_tac_toe.util.Const;
 public class GameBoard {
 
     public enum MARK {
-        EMPTY,
-        CIRCLE,
-        CROSS;
+        EMPTY("Nobody"),
+        CIRCLE("Circle"),
+        CROSS("Cross");
+
+        private String name;
+
+        MARK(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 
     private final static int winningPositions[][] = {
@@ -24,45 +35,67 @@ public class GameBoard {
     };
 
     private MARK activeMark;
-
     private MARK[] fieldsStats;
+    private boolean activeGame;
 
     public GameBoard() {
         setActiveMark(MARK.CIRCLE);
         fieldsStats = new MARK[Const.GAME_BOARD_SIZE];
+        startNewGame();
+    }
 
+    public void startNewGame(){
         initFieldStats();
+        activeGame = true;
     }
 
     private void initFieldStats(){
-        for(int i=0; i< fieldsStats.length; i++)
-            fieldsStats[i] = MARK.EMPTY;
+        Arrays.fill(fieldsStats,MARK.EMPTY);
+    }
+
+    public boolean isGameFinished(){
+        return isGameBoardFull() || checkIfActiveMarkHasWon();
+    }
+
+    private boolean checkIfActiveMarkHasWon(){
+        return getActiveMark() == getWinnerMark();
     }
 
     public void placeMarkOnField(final int fieldId){
             fieldsStats[fieldId] = getActiveMark();
     }
 
-    public boolean isFieldEmpty(final int fieldId){
-        return fieldsStats[fieldId] == MARK.EMPTY;
-    }
-
-
-    public void setActiveMark(MARK activeMark) {
-        this.activeMark = activeMark;
-    }
-
-    public boolean checkIfActiveMarkHasWon(){
-        return getActiveMark() == getWinnerMark();
+    public MARK getActiveMark() {
+        return activeMark;
     }
 
     public MARK getWinnerMark(){
         for(int[] winPos: winningPositions){
-            if(Arrays.equals(winPos, getActiveMarkFieldsIds()))
+            if(checkIfActiveMarkHasWinningPosition(winPos,getActiveMarkFieldsIds()))
                 return getActiveMark();
         }
 
         return MARK.EMPTY;
+    }
+
+    public boolean isFieldEmpty(final int fieldId){
+        return fieldsStats[fieldId] == MARK.EMPTY;
+    }
+
+    private void setActiveMark(MARK activeMark) {
+        this.activeMark = activeMark;
+    }
+
+
+    private boolean checkIfActiveMarkHasWinningPosition(int[] winningPositionFields, int[] activeMarksFields){
+        int sameFields = 0;
+        for(int i: winningPositionFields){
+            for(int j: activeMarksFields)
+                if(i==j)
+                    sameFields++;
+        }
+
+        return sameFields==3;
     }
 
     private int[] getActiveMarkFieldsIds(){
@@ -79,10 +112,6 @@ public class GameBoard {
         return resultArray;
     }
 
-    public MARK getActiveMark() {
-        return activeMark;
-    }
-
     public void changeActiveMark() {
         if(this.activeMark == MARK.CIRCLE)
             this.activeMark = MARK.CROSS;
@@ -90,7 +119,7 @@ public class GameBoard {
             this.activeMark = MARK.CIRCLE;
     }
 
-    boolean isGameBoardFull(){
+    private boolean isGameBoardFull(){
         int freeFields = 0;
         for(MARK field: fieldsStats)
             if(field== MARK.EMPTY)
@@ -98,4 +127,14 @@ public class GameBoard {
 
         return freeFields==0;
     }
+
+    public void endGame(){
+        activeGame=false;
+    }
+
+    public boolean isActiveGame() {
+        return activeGame;
+    }
+
+
 }

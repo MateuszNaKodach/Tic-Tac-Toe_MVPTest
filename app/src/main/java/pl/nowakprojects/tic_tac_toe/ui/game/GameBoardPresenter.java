@@ -7,12 +7,12 @@ import pl.nowakprojects.tic_tac_toe.mvp.MvpPresenter;
  * Created by Mateusz on 24.12.2016.
  */
 
-public class GameBoardPresenter implements MvpPresenter<GameBoardView>{
+final class GameBoardPresenter implements MvpPresenter<GameBoardView>{
 
-    GameBoardView gameBoardView;
-    GameBoard gameBoard;
+    private GameBoardView gameBoardView;
+    private GameBoard gameBoard;
 
-    public GameBoardPresenter(GameBoardView gameBoardView) {
+    GameBoardPresenter(GameBoardView gameBoardView) {
         attachView(gameBoardView);
         initGameBoard(new GameBoard());
     }
@@ -21,29 +21,59 @@ public class GameBoardPresenter implements MvpPresenter<GameBoardView>{
         this.gameBoard = gameBoard;
     }
 
-    public GameBoard.MARK getActivePlayerMark(){
+    GameBoard.MARK getActivePlayerMark(){
         return gameBoard.getActiveMark();
     }
 
-    public boolean isFieldEmpty(int fieldId) {
+    private boolean isFieldEmpty(int fieldId) {
         return gameBoard.isFieldEmpty(fieldId);
     }
 
-    public void placePlayerMarkOnField(int fieldId) {
+    void placeActiveMarkOnField(int fieldId) {
         gameBoard.placeMarkOnField(fieldId);
+
     }
 
-    public void changeActivePlayer() {
+    private void changeActivePlayer() {
         gameBoard.changeActiveMark();
     }
 
-    public boolean checkIfActivePlayerHasWon() {
-        return gameBoard.checkIfActiveMarkHasWon();
+    private boolean isGameFinished(){
+        return gameBoard.isGameFinished();
     }
 
-    public GameBoard.MARK getWinnerMark(){
+    void finishGame(){
+        if (isGameFinished()) {
+
+            gameBoardView.showPlayAgainMessage();
+            endGame();
+        }
+
+        changeActivePlayer();
+    }
+
+    private void endGame(){
+        gameBoard.endGame();
+    }
+
+    private boolean isActiveGame(){
+        return gameBoard.isActiveGame();
+    }
+
+    void startNewGame(){
+        gameBoardView.hidePlayAgainMessage();
+        gameBoard.startNewGame();
+        gameBoardView.clearGameBoardViewLayout();
+    }
+
+    GameBoard.MARK getWinnerMark(){
         return gameBoard.getWinnerMark();
     }
+
+    boolean isAllowToPlaceMarkOnField(int fieldId){
+        return isFieldEmpty(fieldId) && isActiveGame();
+    }
+
 
     @Override
     public void onCreate() {
